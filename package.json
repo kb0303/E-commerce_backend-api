@@ -1,0 +1,19 @@
+{
+  "name": "e-commerce_backend-api",
+  "version": "1.0.0",
+  "description": "APIs for E-Commerce Application",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kb0303/E-commerce_backend-api.git"
+  },
+  "author": "Krishnam Bisht",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kb0303/E-commerce_backend-api/issues"
+  },
+  "homepage": "https://github.com/kb0303/E-commerce_backend-api#readme"
+}
