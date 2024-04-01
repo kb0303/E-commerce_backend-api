@@ -1,6 +1,7 @@
 {
   "name": "e-commerce_backend-api",
   "version": "1.0.0",
+  "type": "module",
   "description": "APIs for E-Commerce Application",
   "main": "server.js",
   "scripts": {
@@ -15,5 +16,9 @@
   "bugs": {
     "url": "https://github.com/kb0303/E-commerce_backend-api/issues"
   },
-  "homepage": "https://github.com/kb0303/E-commerce_backend-api#readme"
+  "homepage": "https://github.com/kb0303/E-commerce_backend-api#readme",
+  "dependencies": {
+    "express": "^4.19.2",
+    "nodemon": "^3.1.0"
+  }
 }
