@@ -8,6 +8,31 @@ export default class ProductModel {
 		this.category = category;
 		this.sizes = sizes;
 	}
+	static getAll() {
+		return products;
+	}
+
+	static add(product) {
+		product.id = products.length + 1
+		products.push(product);
+		return product;
+	}
+
+	static filter(minPrice, maxPrice, category) {
+		const result = products.filter((product) => {
+			return (
+				(!minPrice || product.price >= minPrice) &&
+				(!maxPrice || product.price <= maxPrice) &&
+				(!category || product.category == category)
+			)
+		});
+		return result;
+	}
+
+	static get(id) {
+		const product = products.find(p => p.id == id)
+		return product;
+	}
 }
 
 var products = [
@@ -16,7 +41,8 @@ var products = [
 		'Atomic Habits',
 		'A supremely practical and useful book.',
 		300,
-		'https://m.media-amazon.com/images/I/51-nXsSRfZL._SX328_BO1,204,203,200_.jpg'
+		'https://m.media-amazon.com/images/I/51-nXsSRfZL._SX328_BO1,204,203,200_.jpg',
+		"category1"
 	),
 	new ProductModel(
 		2,
@@ -25,7 +51,7 @@ var products = [
 		340,
 		'https://m.media-amazon.com/images/I/51xwGSNX-EL._SX356_BO1,204,203,200_.jpg',
 		"category2",
-		"M"
+		['S', 'XL', 'XXL']
 	),
 	new ProductModel(
 		3,
@@ -34,6 +60,6 @@ var products = [
 		280,
 		'https://m.media-amazon.com/images/I/31PBdo581fL._SX317_BO1,204,203,200_.jpg',
 		"category3",
-		"XXL"
+		['M', 'XL', 'S']
 	)
 ]

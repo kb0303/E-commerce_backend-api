@@ -1,12 +1,17 @@
 // routes/paths to ProductController
 import express from "express";
-import ProductController from "./product.controller";
+import ProductController from "./product.controller.js";
+import { upload } from "../../middlewares/fileUpload.middleware.js";
 
-const router = express.Router();
+const ProductRouter = express.Router();
 
 const productController = new ProductController();
 
 // Paths to controller methods
-router.get('/', productController.getAllProducts);
+ProductRouter.get('/', productController.getAllProducts);
+ProductRouter.post('/', upload.single('imageUrl'), productController.addProduct);
 
-export default router;
+ProductRouter.get('/filteredProducts', productController.filterProduct);
+ProductRouter.get('/:id', productController.getOneProduct);
+
+export default ProductRouter;
