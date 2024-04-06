@@ -2,7 +2,7 @@
 node_modules/
 
 # Ignore node_modules directory
-# uploads/*
+uploads/*
 
 # Ignore .env files
 *.env
