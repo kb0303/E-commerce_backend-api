@@ -1,8 +1,10 @@
+import UserModel from "../features/user/user.model.js";
+
 const basicAuth = (req, res, next) => {
 	const authHeader = req.headers["authorization"]
 
 	// check if authorization header is empty
-	if(!authHeader) {
+	if (!authHeader) {
 		return res.status(401).send("No authorization details found")
 	}
 	console.log(authHeader);
@@ -14,8 +16,15 @@ const basicAuth = (req, res, next) => {
 	// decode credentials
 	const decodeCredentials = Buffer.from(base64Credentials, 'base64').toString('utf-8');
 	console.log(decodeCredentials);
+
 	const creds = decodeCredentials.split(':');
-	console.log(creds);
+	const user = UserModel.getAll().find(u => u.email == creds[0] && u.password == creds[1]);
+
+	if (user) {
+		next()
+	} else {
+		res.status(401).send("Incorrect Credentials")
+	}
 }
 
 export default basicAuth;
