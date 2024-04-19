@@ -13,5 +13,9 @@ ProductRouter.post('/', upload.single('imageUrl'), productController.addProduct)
 
 ProductRouter.get('/filteredProducts', productController.filterProduct);
 ProductRouter.get('/:id', productController.getOneProduct);
+ProductRouter.post('/ratings', productController.rateProduct);
 
 export default ProductRouter;
+
+
+// localhost:3000/api/products/ratings?userID=1&productID=1&rating=2
