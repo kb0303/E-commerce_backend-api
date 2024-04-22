@@ -1,0 +1,158 @@
+{
+	"swagger": "2.0",
+	"info": {
+		"version": "1.0.0",
+		"description": "API for E-Commerce application",
+		"title": "E-Commerce API"
+	},
+	"host": "localhost:3000",
+	"securityDefinitions": {
+		"jwt": {
+			"in": "header",
+			"name": "Authorization",
+			"type": "apiKey"
+		}
+	},
+	"paths": {
+		"/api/products": {
+			"get": {
+				"tags": [
+					"Products"
+				],
+				"summary": "Get Products",
+				"description": "User will get all products",
+				"security": [
+					{
+						"jwt": {}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"401": {
+						"description": "Unauthorized"
+					}
+				}
+			}
+		},
+		"/api/products/{id}": {
+			"get": {
+				"tags": [
+					"Products"
+				],
+				"summary": "Get Product By Id",
+				"description": "User will get product by Id",
+				"security": [
+					{
+						"jwt": {}
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"description": "Enter Product ID: ",
+						"required": true,
+						"schema": {
+							"type": "string"
+						}
+					}
+				],				
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"404": {
+						"description": "Product not found"
+					}
+				}
+			}
+		},
+		"/api/products/filteredProducts": {
+			"get": {
+				"tags": [
+					"Products"
+				],
+				"summary": "Get filtered Products",
+				"description": "Get Products filtered by min price, max price, and category",
+				"security": [
+					{
+						"jwt": {}
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "minPrice",
+						"description": "Enter Minimum Price: ",
+						"schema": {
+							"type": "number",
+							"format": "float"
+						}
+					},
+					{
+						"in": "query",
+						"name": "maxPrice",
+						"description": "Enter Maximum Price: ",
+						"schema": {
+							"type": "number",
+							"format": "float"
+						}
+					},
+					{
+						"in": "query",
+						"name": "category",
+						"description": "Enter Product Category: ",
+						"schema": {
+							"type": "string"
+						}
+					}
+				],				
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"404": {
+						"description": "Product not found"
+					}
+				}
+			}
+		},
+		"/api/user/signIn": {
+			"post": {
+				"tags": [
+					"User"
+				],
+				"summary": "login",
+				"description": "User login to get token",
+				"parameters": [
+					{
+						"in": "body",
+						"name": "body",
+						"description": "User Credentials",
+						"schema": {
+							"type": "object",
+							"properties": {
+								"email": {
+									"type": "string"
+								},
+								"password": {
+									"type": "string"
+								}
+							}
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"400": {
+						"description": "Incorrect Credentials"
+					}
+				}
+			}
+		}
+	}
+}

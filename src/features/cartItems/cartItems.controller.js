@@ -11,7 +11,6 @@ export default class CartItemsController {
 
 	get(req, res) {
 		const userId = req.userId;
-		console.log(userId);
 
 		const items = CartItemsModel.get(userId);
 		if (items <= 0) {
@@ -26,4 +25,12 @@ export default class CartItemsController {
 		CartItemsModel.update(productId, quantity);
 		res.status(200).send("Cart Item update successfully")
 	}
+
+	delete(req, res) {
+		const userId = req.userId;
+		const cartItemId = req.params.id;
+		CartItemsModel.delete(cartItemId, userId);
+		res.status(200).send("Item has been deleted from the cart")
+	}
+
 }
