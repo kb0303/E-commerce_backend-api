@@ -40,6 +40,63 @@
 						"description": "Unauthorized"
 					}
 				}
+			},
+			"post": {
+				"tags": [
+					"Products"
+				],
+				"summary": "Add a Product",
+				"description": "User(Seller) will be able to add products",
+				"security": [
+					{
+						"jwt": {}
+					}
+				],
+				"requestBody": {
+					"content": {
+						"multipart/form-data": {
+							"schema": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string",
+										"description": "The name of the product"
+									},
+									"desc": {
+										"type": "string",
+										"description": "The description of the product"
+									},
+									"price": {
+										"type": "number",
+										"format": "float",
+										"description": "The price of the product"
+									},
+									"category": {
+										"type": "string",
+										"description": "The category of the product"
+									},
+									"sizes": {
+										"type": "array",
+										"items": {
+											"type": "string",
+											"description": "The available sizes of the product"
+										}
+									},
+									"imageUrl": {
+										"type": "string",
+										"format": "binary",
+										"description": "The image of the product"
+									}
+								}
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK"
+					}
+				}
 			}
 		},
 		"/api/products/{id}": {
