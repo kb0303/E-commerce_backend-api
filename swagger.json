@@ -1,16 +1,22 @@
 {
-	"swagger": "2.0",
+	"openapi": "3.0.0",
 	"info": {
 		"version": "1.0.0",
 		"description": "API for E-Commerce application",
 		"title": "E-Commerce API"
 	},
-	"host": "localhost:3000",
-	"securityDefinitions": {
-		"jwt": {
-			"in": "header",
-			"name": "Authorization",
-			"type": "apiKey"
+	"servers": [
+		{
+			"url": "http://localhost:3000"
+		}
+	],
+	"components": {
+		"securitySchemes": {
+			"jwt": {
+				"in": "header",
+				"name": "Authorization",
+				"type": "apiKey"
+			}
 		}
 	},
 	"paths": {
@@ -58,7 +64,7 @@
 							"type": "string"
 						}
 					}
-				],				
+				],
 				"responses": {
 					"200": {
 						"description": "OK"
@@ -108,13 +114,140 @@
 							"type": "string"
 						}
 					}
-				],				
+				],
 				"responses": {
 					"200": {
 						"description": "OK"
 					},
 					"404": {
 						"description": "Product not found"
+					}
+				}
+			}
+		},
+		"/api/cart": {
+			"get": {
+				"tags": [
+					"Cart"
+				],
+				"summary": "Get Cart Items",
+				"description": "User will get all Cart Items that user added",
+				"security": [
+					{
+						"jwt": {}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"404": {
+						"description": "Cart is empty, Add items to the cart"
+					}
+				}
+			},
+			"post": {
+				"tags": [
+					"Cart"
+				],
+				"summary": "Add Items to the cart",
+				"description": "Add Items to the cart with productId and quantity",
+				"security": [
+					{
+						"jwt": {}
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "productId",
+						"description": "Enter productId: ",
+						"schema": {
+							"type": "number",
+							"format": "float"
+						}
+					},
+					{
+						"in": "query",
+						"name": "quantity",
+						"description": "Enter Product Quantity: ",
+						"schema": {
+							"type": "number",
+							"format": "float"
+						}
+					}
+				],
+				"responses": {
+					"201": {
+						"description": "cart updated, item added"
+					}
+				}
+			},
+			"put": {
+				"tags": [
+					"Cart"
+				],
+				"summary": "Update Items quantity in the cart",
+				"description": "Update Items quantity in the cart with productId and quantity",
+				"security": [
+					{
+						"jwt": {}
+					}
+				],
+				"parameters": [
+					{
+						"in": "query",
+						"name": "productId",
+						"description": "Enter productId: ",
+						"schema": {
+							"type": "number",
+							"format": "float"
+						}
+					},
+					{
+						"in": "query",
+						"name": "quantity",
+						"description": "Enter Product Quantity: ",
+						"schema": {
+							"type": "number",
+							"format": "float"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Cart Item update successfully"
+					}
+				}
+			}
+		},
+		"/api/cart/{id}": {
+			"delete": {
+				"tags": [
+					"Cart"
+				],
+				"summary": "Delete Items from the cart",
+				"description": "Update Items quantity in the cart with productId and quantity",
+				"security": [
+					{
+						"jwt": {}
+					}
+				],
+				"parameters": [
+					{
+						"in": "path",
+						"name": "id",
+						"description": "Enter Cart Item ID: ",
+						"required": true,
+						"schema": {
+							"type": "number",
+							"format": "float"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Item has been deleted from the cart"
 					}
 				}
 			}
@@ -126,24 +259,65 @@
 				],
 				"summary": "login",
 				"description": "User login to get token",
-				"parameters": [
-					{
-						"in": "body",
-						"name": "body",
-						"description": "User Credentials",
-						"schema": {
-							"type": "object",
-							"properties": {
-								"email": {
-									"type": "string"
-								},
-								"password": {
-									"type": "string"
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"description": "User Credentials",
+							"schema": {
+								"type": "object",
+								"properties": {
+									"email": {
+										"type": "string"
+									},
+									"password": {
+										"type": "string"
+									}
 								}
 							}
 						}
 					}
+				},
+				"responses": {
+					"200": {
+						"description": "OK"
+					},
+					"400": {
+						"description": "Incorrect Credentials"
+					}
+				}
+			}
+		},
+		"/api/user/signUp": {
+			"post": {
+				"tags": [
+					"User"
 				],
+				"summary": "Register",
+				"description": "User Registeration",
+				"requestBody": {
+					"content": {
+						"application/json": {
+							"description": "User Credentials",
+							"schema": {
+								"type": "object",
+								"properties": {
+									"name": {
+										"type": "string"
+									},
+									"email": {
+										"type": "string"
+									},
+									"password": {
+										"type": "string"
+									},
+									"type": {
+										"type": "string"
+									}
+								}
+							}
+						}
+					}
+				},
 				"responses": {
 					"200": {
 						"description": "OK"

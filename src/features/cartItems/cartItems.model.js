@@ -22,7 +22,7 @@ export default class CartItemsModel {
 		if (!cartItem) {
 			return "Cart Item not found"
 		} else {
-			cartItem.quantity = quantity;
+			cartItem.quantity = parseInt(quantity);
 			return cartItem
 		}
 	}

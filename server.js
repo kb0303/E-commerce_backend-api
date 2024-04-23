@@ -24,8 +24,13 @@ server.use("/api/user", UserRouter)
 // for all requests related to cart, redirect to cart routes.
 server.use("/api/cart", jwtAuth, CartItemRouter)
 
+// Deefault request handler
 server.get("/", (req, res) => {
 	res.send("Welcome to E-Commerce Party")
+})
+
+server.use((req, res) => {
+	res.status(404).send("API not found, Please check our documentation for more information at /api-docs")
 })
 
 server.listen(3000, () => {
