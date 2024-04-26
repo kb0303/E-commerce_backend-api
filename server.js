@@ -48,7 +48,7 @@ server.get("/", (req, res) => {
 	res.send("Welcome to E-Commerce Party")
 })
 
-// Error Handler Middleware
+// Error Handler Middleware.
 server.use((err, req, res, next) => {
 	console.log(err);
 
