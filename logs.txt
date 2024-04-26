@@ -71,3 +71,5 @@
 {"level":"info","message":"/ - {}","service":"request-logging"}
 {"level":"info","message":"/ - {}","service":"request-logging"}
 {"level":"info","message":"/ - {}","service":"request-logging"}
+{"level":"info","message":"/ - {}","service":"request-logging"}
+{"level":"info","message":"/ - {}","service":"request-logging"}

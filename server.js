@@ -2,14 +2,14 @@ import express from 'express';
 import swagger from 'swagger-ui-express';
 import cors from 'cors'
 
-import ProductRouter from "../src/features/product/product.routes.js";
-import UserRouter from "../src/features/user/user.routes.js";
+import ProductRouter from "./src/features/product/product.routes.js";
+import UserRouter from "./src/features/user/user.routes.js";
 // import basicAuth from './src/middlewares/basicAuth.middleware.js';
-import jwtAuth from '../src/middlewares/jwtAuth.middleware.js';
-import CartItemRouter from '../src/features/cartItems/cartItems.routes.js';
-import apiDocs from '../swagger.json' assert {type: 'json'};
-import loggerMiddleware from '../src/middlewares/logger.middleware.js';
-import { ApplicationError } from '../src/error-handler/applicationError.js';
+import jwtAuth from './src/middlewares/jwtAuth.middleware.js';
+import CartItemRouter from './src/features/cartItems/cartItems.routes.js';
+import apiDocs from './swagger.json' assert {type: 'json'};
+import loggerMiddleware from './src/middlewares/logger.middleware.js';
+import { ApplicationError } from './src/error-handler/applicationError.js';
 // import bodyParser from 'body-parser';
 
 const server = express();
