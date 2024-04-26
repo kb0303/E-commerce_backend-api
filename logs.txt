@@ -69,3 +69,5 @@
 {"level":"info","message":"/api/products/aa - {}","service":"request-logging"}
 {"level":"info","message":"/ - {}","service":"request-logging"}
 {"level":"info","message":"/ - {}","service":"request-logging"}
+{"level":"info","message":"/ - {}","service":"request-logging"}
+{"level":"info","message":"/ - {}","service":"request-logging"}
