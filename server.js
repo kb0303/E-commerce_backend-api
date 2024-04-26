@@ -52,17 +52,19 @@ server.get("/", (req, res) => {
 server.use((err, req, res, next) => {
 	console.log(err);
 
-	if(err instanceof ApplicationError) {
+	if (err instanceof ApplicationError) {
 		res.status(err.code).send(err.message);
 	}
 	// server errors.
 	res.status(500).send("Something went wrong, Please try again later");
-}) 
+})
 
 server.use((req, res) => {
 	res.status(404).send("API not found, Please check our documentation for more information at /api-docs")
 })
-
-server.listen(3000, () => {
-	console.log("Server is listening on port 3000")
+const port = process.env.PORT || 3001;
+server.listen(port, () => {
+	console.log(`Server is listening on port ${port}`)
 });
+
+export default server;
