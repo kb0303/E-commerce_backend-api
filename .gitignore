@@ -10,3 +10,4 @@ uploads/*
 # Ignore compiled binaries
 *.exe
 *.dll
+.vercel
