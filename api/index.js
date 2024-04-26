@@ -62,9 +62,9 @@ server.use((err, req, res, next) => {
 server.use((req, res) => {
 	res.status(404).send("API not found, Please check our documentation for more information at /api-docs")
 })
-const port = process.env.PORT || 3001;
-server.listen(port, () => {
-	console.log(`Server is listening on port ${port}`)
+// const port = process.env.PORT || 3000;
+server.listen(8000, () => {
+	console.log(`Server is listening on port 8000`)
 });
 
 export default server;
