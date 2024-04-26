@@ -1,8 +1,8 @@
-FROM node:16
+FROM node:20
 
 COPY package*.json ./
 
-WORKDIR /opt/server/backend-test
+WORKDIR /
 
 COPY . .
 
