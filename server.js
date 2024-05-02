@@ -64,7 +64,7 @@ server.use((req, res) => {
 })
 // const port = process.env.PORT || 3000;
 server.listen(8080, () => {
-	console.log(`Server is listening on port 8000`)
+	console.log(`Server is listening on port 8080`)
 });
 
 export default server;

@@ -3,6 +3,8 @@ import winston from 'winston';
 
 const fsPromise = fs.promises;
 
+// Logging Without winston library
+
 // async function log(logData) {
 // 	try {
 // 		logData = `\n${new Date().toString()} LogData:  ${logData}`
@@ -12,6 +14,7 @@ const fsPromise = fs.promises;
 // 		console.log(error);
 // 	}
 // }
+
 
 const logger = winston.createLogger({
 	level: 'info',

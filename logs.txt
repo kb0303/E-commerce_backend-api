@@ -73,3 +73,4 @@
 {"level":"info","message":"/ - {}","service":"request-logging"}
 {"level":"info","message":"/ - {}","service":"request-logging"}
 {"level":"info","message":"/ - {}","service":"request-logging"}
+{"level":"info","message":"/api/user/signUp - {\"name\":\"bbb\",\"email\":\"lodu@loduko.com\",\"password\":\"lodu123\"}","service":"request-logging"}
