@@ -1,20 +1,31 @@
 import ProductModel from "./product.model.js";
+import ProductRepository from "./product.repository.js";
 
 export default class ProductController {
-	getAllProducts(req, res) {
-		const products = ProductModel.getAll();
+
+	constructor() {
+		this.productRepository = new ProductRepository();
+	}
+
+	async getAllProducts(req, res) {
+		const products = await this.productRepository.findAll()
 		res.status(200).send(products);
 	}
 
-	addProduct(req, res) {
-		const { name, desc, price, category, sizes } = req.body;
-		const imageUrl = req.file.filename	
-		const newProduct = { name, desc, price, imageUrl, category, sizes }
+	async addProduct(req, res) {
+		try {
+			const { name, desc, price, category, sizes } = req.body;
+			const imageUrl = req.file.filename
+			const newProduct = new ProductModel(name, desc, price, imageUrl, category, sizes)
+			await this.productRepository.add(newProduct);
 
-		ProductModel.add(newProduct)
+		} catch (error) {
+			console.log(error)
+			res.status(500).send("Something went wrong in the database");
+		}
 
-		const products = ProductModel.getAll();
-		res.status(201).send(products);
+		const products = await this.productRepository.findAll()
+		res.status(200).send(products);
 	}
 
 	getOneProduct(req, res) {

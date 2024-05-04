@@ -1,6 +1,7 @@
 import express from 'express';
 import swagger from 'swagger-ui-express';
 import cors from 'cors'
+import './env.js';
 
 import ProductRouter from "./src/features/product/product.routes.js";
 import UserRouter from "./src/features/user/user.routes.js";
@@ -10,9 +11,12 @@ import CartItemRouter from './src/features/cartItems/cartItems.routes.js';
 import apiDocs from './swagger.json' assert {type: 'json'};
 import loggerMiddleware from './src/middlewares/logger.middleware.js';
 import { ApplicationError } from './src/error-handler/applicationError.js';
+import { connectToMongoDb } from './config/mongodb.js';
 // import bodyParser from 'body-parser';
 
 const server = express();
+
+// loading environment variables
 
 // CORS Policy Configuration
 server.use(cors());
@@ -62,9 +66,10 @@ server.use((err, req, res, next) => {
 server.use((req, res) => {
 	res.status(404).send("API not found, Please check our documentation for more information at /api-docs")
 })
-// const port = process.env.PORT || 3000;
-server.listen(8080, () => {
-	console.log(`Server is listening on port 8080`)
+const port = process.env.PORT || 8080;
+server.listen(port, () => {
+	console.log(`Server is listening on port: ${port}`);
+	connectToMongoDb();
 });
 
 export default server;

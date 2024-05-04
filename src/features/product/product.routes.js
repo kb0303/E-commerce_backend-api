@@ -8,8 +8,12 @@ const ProductRouter = express.Router();
 const productController = new ProductController();
 
 // Paths to controller methods
-ProductRouter.get('/', productController.getAllProducts);
-ProductRouter.post('/', upload.single('imageUrl'), productController.addProduct);
+ProductRouter.get('/', (req, res) => {
+	productController.getAllProducts(req, res)
+});
+ProductRouter.post('/', upload.single('imageUrl'), (req, res) => {
+	productController.addProduct(req, res)
+});
 
 ProductRouter.get('/filteredProducts', productController.filterProduct);
 ProductRouter.get('/:id', productController.getOneProduct);
