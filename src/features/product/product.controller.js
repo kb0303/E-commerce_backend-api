@@ -1,3 +1,4 @@
+import { ApplicationError } from "../../error-handler/applicationError.js";
 import ProductModel from "./product.model.js";
 import ProductRepository from "./product.repository.js";
 
@@ -8,59 +9,79 @@ export default class ProductController {
 	}
 
 	async getAllProducts(req, res) {
-		const products = await this.productRepository.findAll()
-		res.status(200).send(products);
+		try {
+			const products = await this.productRepository.findAll()
+			res.status(200).send(products);
+
+		} catch (error) {
+			throw new ApplicationError('Something went wrong in products database', 500)
+		}
 	}
 
 	async addProduct(req, res) {
 		try {
 			const { name, desc, price, category, sizes } = req.body;
 			const imageUrl = req.file.filename
-			const newProduct = new ProductModel(name, desc, price, imageUrl, category, sizes)
+
+			// creating new product instance
+			const newProduct = new ProductModel(name, desc, parseFloat(price), imageUrl, category, sizes)
+
+			// adding product in the database
 			await this.productRepository.add(newProduct);
 
+			// calling list of all products
+			const products = await this.productRepository.findAll()
+			res.status(200).send(products);
+
 		} catch (error) {
-			console.log(error)
-			res.status(500).send("Something went wrong in the database");
+			throw new ApplicationError('Something went wrong in products database', 500)
 		}
 
-		const products = await this.productRepository.findAll()
-		res.status(200).send(products);
+
 	}
 
-	getOneProduct(req, res) {
-		const id = req.params.id;
-		const product = ProductModel.get(id);
-		if (!product) {
-			res.status(404).send("Product not found")
-		} else {
-			res.status(200).send(product)
+	async getOneProduct(req, res) {
+		try {
+			const id = req.params.id;
+			const product = await this.productRepository.findOne(id);
+			if (!product) {
+				res.status(404).send("Product not found")
+			} else {
+				res.status(200).send(product)
+			}
+		} catch (error) {
+			throw new ApplicationError('Something went wrong in products database', 500)
 		}
+
 	}
 
-	filterProduct(req, res) {
-		const minPrice = req.query.minPrice;
-		const maxPrice = req.query.maxPrice;
-		const category = req.query.category;
-		const filteredProducts = ProductModel.filter(minPrice, maxPrice, category);
-		if (!filteredProducts) {
-			res.status(404).send("Product not found in this range")
-		} else {
+	async filterProduct(req, res) {
+		try {
+			const minPrice = req.query.minPrice;
+			const maxPrice = req.query.maxPrice;
+			const category = req.query.category;
+
+			const filteredProducts = await this.productRepository.filter(minPrice, maxPrice, category);
+
 			res.status(200).send(filteredProducts);
+
+		} catch (error) {
+			console.log(error);
+			throw new ApplicationError('Something went wrong in products database', 500)
 		}
 	}
 
-	rateProduct(req, res) {
+	async rateProduct(req, res) {
 		const userID = req.userId;
 		const productID = req.query.productID;
 		const rating = req.query.rating;
 
 		try {
-			ProductModel.rateProduct(userID, productID, rating);
+			await this.productRepository.rate(userID, productID, rating);
+			return res.status(200).send("Rating added, Thanks for your feedback");
 		} catch (error) {
 			return res.status(400).send(error.message);
 		}
 
-		return res.status(200).send("Rating added, Thanks for your feedback");
 	}
 }

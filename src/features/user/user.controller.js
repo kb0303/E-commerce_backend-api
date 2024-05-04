@@ -35,7 +35,7 @@ export default class UserController {
 				const signedUp = await bcrypt.compare(req.body.password, user.password);
 
 				if (signedUp) {
-					const token = jwt.sign({ userId: signedUp.id, email: signedUp.email }, 
+					const token = jwt.sign({ userId: user._id, email: user.email },
 						process.env.JWT_SECRET, {
 						expiresIn: '1h'
 					})

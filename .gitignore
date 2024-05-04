@@ -4,6 +4,10 @@ node_modules/
 # Ignore node_modules directory
 uploads/*
 
+# Ignore log files
+log.txt
+logs.txt
+
 # Ignore .env files
 *.env
 
@@ -11,3 +15,5 @@ uploads/*
 *.exe
 *.dll
 .vercel
+
+
