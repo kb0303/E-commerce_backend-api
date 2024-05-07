@@ -1,18 +1,30 @@
 import CartItemsModel from "./cartItems.model.js";
+import CartItemRepository from "./cartItems.repository.js";
 
 export default class CartItemsController {
-	add(req, res) {
-		const { productId, quantity } = req.query;
-		const userId = req.userId;
 
-		CartItemsModel.add(productId, userId, quantity);
-		res.status(201).send("cart updated, item added")
+	constructor() {
+		this.repository = new CartItemRepository();
 	}
 
-	get(req, res) {
+	async add(req, res) {
+		try {
+			const { productId, quantity } = req.query;
+			const userId = req.userId;
+
+			await this.repository.add(productId, userId, quantity);
+			res.status(201).send("cart updated, item added")
+		} catch (error) {
+			console.log(error)
+			res.status(500).send("something went wrong")
+		}
+
+	}
+
+	async get(req, res) {
 		const userId = req.userId;
 
-		const items = CartItemsModel.get(userId);
+		const items = await this.repository.getUserCartItems(userId);
 		if (items <= 0) {
 			return res.status(404).send("Cart is empty, Add items to the cart")
 		} else {

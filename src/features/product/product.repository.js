@@ -72,10 +72,19 @@ export default class ProductRepository {
 		try {
 			const db = getDb();
 			const collection = db.collection(this.collection);
-			return await collection.updateOne(
+
+			// 1. Remove existing rating entry, if any
+			await collection.updateOne(
 				{ _id: new ObjectId(productID) },
-				{ $push: { ratings: { userID, rating } } }
+				{ $pull: { ratings: { userID: new ObjectId(userID) } } }
 			);
+
+			// 2. Add new rating entry
+			await collection.updateOne(
+				{ _id: new ObjectId(productID) },
+				{ $push: { ratings: { userID: new ObjectId(userID), rating } } }
+			);
+
 		} catch (error) {
 			console.log(error);
 			throw new ApplicationError('Something went wrong in products database', 500)
