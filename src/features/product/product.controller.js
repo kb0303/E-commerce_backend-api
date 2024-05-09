@@ -24,7 +24,7 @@ export default class ProductController {
 			const imageUrl = req.file.filename
 
 			// creating new product instance
-			const newProduct = new ProductModel(name, desc, parseFloat(price), imageUrl, category, sizes)
+			const newProduct = new ProductModel(name, desc, parseFloat(price), imageUrl, category, sizes.split(','))
 
 			// adding product in the database
 			await this.productRepository.add(newProduct);

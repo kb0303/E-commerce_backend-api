@@ -9,7 +9,7 @@ export default class CartItemsController {
 
 	async add(req, res) {
 		try {
-			const { productId, quantity } = req.query;
+			const { productId, quantity } = req.body;
 			const userId = req.userId;
 
 			await this.repository.add(productId, userId, quantity);
@@ -22,27 +22,45 @@ export default class CartItemsController {
 	}
 
 	async get(req, res) {
-		const userId = req.userId;
+		try {
+			const userId = req.userId;
 
-		const items = await this.repository.getUserCartItems(userId);
-		if (items <= 0) {
-			return res.status(404).send("Cart is empty, Add items to the cart")
-		} else {
-			return res.status(200).send(items);
+			const items = await this.repository.getUserCartItems(userId);
+			if (items <= 0) {
+				return res.status(404).send("Cart is empty, Add items to the cart")
+			} else {
+				return res.status(200).send(items);
+			}
+		} catch (error) {
+			console.log(error)
+			res.status(500).send("something went wrong")
 		}
+
 	}
 
-	update(req, res) {
-		const { productId, quantity } = req.query;
-		CartItemsModel.update(productId, quantity);
-		res.status(200).send("Cart Item update successfully")
+	async update(req, res) {
+		try {
+			const { productId, quantity } = req.query;
+			await this.repository.updateCartItem(productId, quantity);
+			res.status(200).send("Cart Item update successfully")
+		} catch (error) {
+			console.log(error)
+			res.status(500).send("something went wrong")
+		}
+
 	}
 
-	delete(req, res) {
-		const userId = req.userId;
-		const cartItemId = req.params.id;
-		CartItemsModel.delete(cartItemId, userId);
-		res.status(200).send("Item has been deleted from the cart")
+	async delete(req, res) {
+		try {
+			const userId = req.userId;
+			const cartItemId = req.params.cartItemId;
+			await this.repository.deleteCartItem(cartItemId, userId)
+			res.status(200).send("Item has been deleted from the cart")
+		} catch (error) {
+			console.log(error)
+			res.status(500).send("something went wrong")
+		}
+
 	}
 
 }

@@ -12,7 +12,11 @@ CartItemRouter.get('/', (req, res) => {
 CartItemRouter.post('/', (req, res) => {
 	cartItemsController.add(req, res)
 });
-CartItemRouter.put('/', cartItemsController.update);
-CartItemRouter.delete('/:id', cartItemsController.delete);
+CartItemRouter.put('/', (req, res) => {
+	cartItemsController.update(req, res)
+});
+CartItemRouter.delete('/:cartItemId', (req, res) => {
+	cartItemsController.delete(req, res)
+});
 
 export default CartItemRouter;
