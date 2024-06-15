@@ -90,4 +90,45 @@ export default class ProductRepository {
 			throw new ApplicationError('Something went wrong in products database', 500)
 		}
 	}
+
+	async averageProductPricePerCategory() {
+		try {
+			const db = getDb();
+			const collection = db.collection(this.collection)
+
+			return await collection.aggregate([
+				{
+					// Stage1: Get avg price of product
+					$group: {
+						_id: "$category",
+						averagePrice: { $avg: "$price" }
+					}
+				}
+			]).toArray();
+		} catch (error) {
+			console.log(error);
+			throw new ApplicationError('Something went wrong in products database', 500)
+		}
+	}
+
+	async averageRatingPerProduct() {
+		try {
+			const db = getDb();
+			const collection = db.collection(this.collection)
+			return await collection.aggregate([
+				{
+					$unwind: "$ratings"
+				},
+				{
+					$group: {
+						_id: "$name",
+						averageRating: {avg: "$ratings.rating"}
+					}
+				}
+			]).toArray()
+		} catch (error) {
+			console.log(error);
+			throw new ApplicationError('Something went wrong in products database', 500)
+		}
+	}
 }

@@ -49,7 +49,7 @@ export default class CartItemRepository {
 			const db = getDb();
 			const collection = db.collection(this.collection);
 			await collection.updateOne({ productId: new ObjectId(productId) }, { $set: { quantity: parseFloat(quantity) } })
-		} catch (error) {
+		} catch (error) {	
 			console.log(error);
 			throw new ApplicationError('Something went wrong in products database', 500)
 		}

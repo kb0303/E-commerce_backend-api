@@ -18,12 +18,19 @@ ProductRouter.post('/', upload.single('imageUrl'), (req, res) => {
 ProductRouter.get('/filteredProducts', (req, res) => {
 	productController.filterProduct(req, res)
 });
-ProductRouter.get('/:id', (req, res) => {
-	productController.getOneProduct(req, res)
-});
+
 ProductRouter.post('/ratings', (req, res) => {
 	productController.rateProduct(req, res)
 });
+
+ProductRouter.get('/averagePrice', (req, res) => {
+	productController.averagePrice(req, res)
+});
+
+ProductRouter.get('/:id', (req, res) => {
+	productController.getOneProduct(req, res)
+});
+
 
 export default ProductRouter;
 
