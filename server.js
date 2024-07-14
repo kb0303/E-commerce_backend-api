@@ -12,6 +12,7 @@ import apiDocs from './swagger.json' assert {type: 'json'};
 import loggerMiddleware from './src/middlewares/logger.middleware.js';
 import { ApplicationError } from './src/error-handler/applicationError.js';
 import { connectToMongoDb } from './config/mongodb.js';
+import OrderRouter from './src/features/order/order.routes.js';
 // import bodyParser from 'body-parser';
 
 const server = express();
@@ -39,17 +40,20 @@ server.use('/api-docs', swagger.serve, swagger.setup(apiDocs));
 server.use(loggerMiddleware);
 
 // for all requests related to product, redirect to product routes.
-server.use("/api/products", jwtAuth, ProductRouter)
+server.use("/api/products", jwtAuth, ProductRouter);
 
 // for all requests related to user, redirect to user routes.
-server.use("/api/user", UserRouter)
+server.use("/api/user", UserRouter);
 
 // for all requests related to cart, redirect to cart routes.
-server.use("/api/cart", jwtAuth, CartItemRouter)
+server.use("/api/cart", jwtAuth, CartItemRouter);
+
+// for all requests related to order, redirect to order routes.
+server.use("/api/orders", jwtAuth, OrderRouter);
 
 // Default request handler
 server.get("/", (req, res) => {
-	res.send("Welcome to E-Commerce Party")
+	res.send("Welcome to the E-Commerce Store");
 })
 
 // Error Handler Middleware.

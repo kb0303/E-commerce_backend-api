@@ -71,6 +71,16 @@ export default class ProductController {
 		}
 	}
 
+	async getAllProductsRatings(req, res) {
+		try {
+			const result = await this.productRepository.getAllRatings();
+			res.status(200).send(result);
+		} catch (error) {
+			console.log(error);
+			throw new ApplicationError('Something went wrong in products database', 500)
+		}
+	}
+
 	async rateProduct(req, res) {
 		try {
 			const userID = req.userId;
@@ -87,6 +97,15 @@ export default class ProductController {
 	async averagePrice(req, res) {
 		try {
 			const result = 	await this.productRepository.averageProductPricePerCategory();
+			res.status(200).send(result);
+		} catch (error) {
+			return res.status(400).send(error.message);
+		}
+	}
+
+	async averageRatingPerProduct(req, res) {
+		try {
+			const result = await this.productRepository.averageRatingPerProduct();
 			res.status(200).send(result);
 		} catch (error) {
 			return res.status(400).send(error.message);

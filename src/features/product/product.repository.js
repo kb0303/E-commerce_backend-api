@@ -68,6 +68,18 @@ export default class ProductRepository {
 		}
 	}
 
+	async getAllRatings() {
+		try {
+			const db = getDb();
+			const collection = await db.collection(this.collection);
+			const allProductsRatings = await collection.find().toArray();
+			return allProductsRatings;
+		} catch (error) {
+			console.log(error);
+			throw new ApplicationError('Something went wrong in products database', 500)
+		}
+	}
+
 	async rate(userID, productID, rating) {
 		try {
 			const db = getDb();
@@ -122,7 +134,7 @@ export default class ProductRepository {
 				{
 					$group: {
 						_id: "$name",
-						averageRating: {avg: "$ratings.rating"}
+						averageRating: { $avg: "$ratings.rating" }
 					}
 				}
 			]).toArray()
