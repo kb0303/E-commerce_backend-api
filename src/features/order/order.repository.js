@@ -1,5 +1,6 @@
 import { ObjectId } from "mongodb";
-import { getDb } from "../../../config/mongodb.js";
+import { getClient, getDb } from "../../../config/mongodb.js";
+import OrderModel from "./order.model.js";
 
 export default class OrderRepository {
 	constructor() {
@@ -7,30 +8,59 @@ export default class OrderRepository {
 	}
 
 	async placeOrder(userId) {
-
+		const client = getClient();
+		const session = client.startSession();
 		try {
-			// 1. get cartItems and calculate total amount.
-			await this.getTotalAmount(userId);
+			const db = getDb();
+
+			// Start the transaction
+			session.startTransaction();
+
+			// 1. Get cartItems and calculate total amount.
+			const items = await this.getTotalAmount(userId, session);
+			const cartTotalAmount = items.reduce((acc, item) => acc + item.totalAmount, 0);
+			console.log(cartTotalAmount);
 
 			// 2. Create an order record.
+			const newOrder = new OrderModel(new ObjectId(userId), cartTotalAmount, new Date());
+			await db.collection(this.collection).insertOne(newOrder, { session });
 
-			//  3. Reduce the stock.
+			// 3. Reduce the stock.
+			for (let item of items) {
+				await db.collection("products").updateOne(
+					{ _id: item.productId },
+					{ $inc: { stock: -item.quantity } },
+					{ session }
+				);
+			}
 
-			//  4. Clear the cart items.	
+			// 4. Clear the cart items.
+			await db.collection("cartItems").deleteMany(
+				{ userId: new ObjectId(userId) },
+				{ session }
+			);
+
+			// Commit the transaction
+			await session.commitTransaction();
 		} catch (error) {
-			console.log(error);
+			// Abort the transaction in case of error
+			await session.abortTransaction();
+			console.error('Transaction aborted due to error:', error);
 			throw new ApplicationError('Something went wrong in products database', 500);
+		} finally {
+			// End the session
+			session.endSession();
 		}
 	}
 
-	async getTotalAmount(userId) {
+	async getTotalAmount(userId, session) {
 		const db = getDb();
 		const items = await db.collection("cartItems").aggregate([
-			//  1. get the cart items for the user
+			// 1. Get the cart items for the user
 			{
 				$match: { userId: new ObjectId(userId) }
 			},
-			//  2. get the products from the products collection
+			// 2. Get the products from the products collection
 			{
 				$lookup: {
 					from: "products",
@@ -51,8 +81,7 @@ export default class OrderRepository {
 					}
 				}
 			}
-		]).toArray();
-		const cartTotalAmount = items.reduce((acc, item) => acc + item.totalAmount, 0)
-		console.log(cartTotalAmount);
+		], { session }).toArray();
+		return items;
 	}
 }

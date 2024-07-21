@@ -18,6 +18,10 @@ export const getDb = () => {
 	return client.db();
 }
 
+export const getClient = () => {
+	return client;
+}
+
 const createCounter = async (db) => {
 	const existingCounter = await db.collection("counters").findOne({ _id: 'cartItemId' })
 	if (!existingCounter) {
@@ -29,7 +33,7 @@ const createIndexes = async (db) => {
 	try {
 		await db.collection("products").createIndex({ price: 1 });
 		await db.collection("products").createIndex({ name: 1, category: -1 });
-		await db.collection("products").createIndex({desc: "text"})
+		await db.collection("products").createIndex({ desc: "text" })
 		console.log("Indexes created");
 	} catch (error) {
 		console.log(error);

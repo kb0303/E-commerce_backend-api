@@ -13,6 +13,7 @@ import loggerMiddleware from './src/middlewares/logger.middleware.js';
 import { ApplicationError } from './src/error-handler/applicationError.js';
 import { connectToMongoDb } from './config/mongodb.js';
 import OrderRouter from './src/features/order/order.routes.js';
+import { connectUsingMongoose } from './config/mongooseConfig.js';
 // import bodyParser from 'body-parser';
 
 const server = express();
@@ -73,7 +74,8 @@ server.use((req, res) => {
 const port = process.env.PORT || 8080;
 server.listen(port, () => {
 	console.log(`Server is listening on port: ${port}`);
-	connectToMongoDb();
+	// connectToMongoDb();
+	connectUsingMongoose();
 });
 
 export default server;
